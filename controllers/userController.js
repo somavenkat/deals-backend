@@ -47,20 +47,29 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("All fields are mandatory!");
   }
   const user = await User.findOne({ email });
+  console.log("user** ", user);
+  // if (!user) {
+  //   res.status(401);
+  //   throw new Error("email or password is not valid");
+  // } else {
+  //   res.json(user);
+  // }
   //compare password with hashedpassword
   if (user && (await bcrypt.compare(password, user.password))) {
-    const accessToken = jwt.sign(
-      {
-        user: {
-          username: user.username,
-          email: user.email,
-          id: user.id,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECERT,
-      { expiresIn: "15m" }
-    );
-    res.status(200).json({ accessToken });
+    console.log("valid user");
+    // const accessToken = jwt.sign(
+    //   {
+    //     user: {
+    //       username: user.username,
+    //       email: user.email,
+    //       id: user.id,
+    //     },
+    //   },
+    //   process.env.ACCESS_TOKEN_SECERT,
+    //   { expiresIn: "15m" }
+    // );
+    // console.log("accessToken", accessToken);
+    res.status(200).json({ message: "Valid User", user });
   } else {
     res.status(401);
     throw new Error("email or password is not valid");
