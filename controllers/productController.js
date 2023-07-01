@@ -51,6 +51,20 @@ const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json(product);
 });
 
+// Update Products
+const updateProduct = asyncHandler(async (req, res) => {
+  console.log("params id", req.params.id);
+  console.log("The request update product body is :", req.body);
+  const id = await Products.findById(req.params.id);
+  const updatedProduct = await Products.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+
+  res.status(200).json(updatedProduct);
+});
+
 // For banners
 const getBanners = asyncHandler(async (req, res) => {
   const banners = await Banners.find({});
@@ -147,6 +161,7 @@ const createDeals = asyncHandler(async (req, res) => {
 module.exports = {
   getProducts,
   createProduct,
+  updateProduct,
   getBanners,
   createBanners,
   getProductTopDeals,
