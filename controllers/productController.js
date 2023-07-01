@@ -65,6 +65,23 @@ const updateProduct = asyncHandler(async (req, res) => {
   res.status(200).json(updatedProduct);
 });
 
+// Delete products
+const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Products.findById(req.params.id);
+  if (!product) {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+  //   if (product.user_id.toString() !== req.user.id) {
+  //     res.status(403);
+  //     throw new Error(
+  //       "product don't have permission to update other user contacts"
+  //     );
+  //   }
+  await Products.deleteOne({ _id: req.params.id });
+  res.status(200).json(product);
+});
+
 // For banners
 const getBanners = asyncHandler(async (req, res) => {
   const banners = await Banners.find({});
@@ -166,4 +183,5 @@ module.exports = {
   createBanners,
   getProductTopDeals,
   createDeals,
+  deleteProduct,
 };
